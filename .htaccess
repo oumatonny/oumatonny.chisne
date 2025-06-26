@@ -1,0 +1,26 @@
+RewriteEngine On
+RewriteBase /oumatonny/
+
+# Handle portfolio URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^portfolio/view\.php\?slug=([^&]+)$ portfolio/view.php?slug=$1 [QSA,L]
+
+# Handle portfolio URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^portfolio/(.+)$ portfolio/$1 [L]
+
+# Remove index.php from URLs
+RewriteCond %{THE_REQUEST} /index\.php [NC]
+RewriteRule ^(.*)index\.php$ /$1 [R=301,L]
+
+# Add trailing slash to directories
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^([^/]+[^/])$ $1/ [R=301,L]
+
+# Prevent directory listing
+Options -Indexes
+
+# Custom 404 page
+ErrorDocument 404 /oumatonny/404.php
