@@ -290,6 +290,23 @@ include 'includes/header.php';
                                 ?>
                             </div>
                             <a href="<?php echo BASE_PATH; ?>/portfolio/view.php?slug=<?php echo $project['slug']; ?>" class="btn btn-small">View Project</a>
+                            <div class="project-links" style="margin-top: 10px; display: flex; gap: 10px;">
+                                <?php if (!empty($project['github_url'])): ?>
+                                    <a href="<?php echo $project['github_url']; ?>" target="_blank" class="btn btn-small btn-secondary" title="View on GitHub">
+                                        <i class="fab fa-github"></i> GitHub
+                                    </a>
+                                <?php endif; ?>
+                                <?php if (!empty($project['dashboard_url'])): ?>
+                                    <a href="<?php echo $project['dashboard_url']; ?>" target="_blank" class="btn btn-small btn-secondary" title="View Live Dashboard">
+                                        <i class="fas fa-chart-line"></i> Live Dashboard
+                                    </a>
+                                <?php endif; ?>
+                                <?php if (!empty($project['video_url'])): ?>
+                                    <a href="<?php echo $project['video_url']; ?>" target="_blank" class="btn btn-small btn-secondary" title="Watch Video Demo">
+                                        <i class="fas fa-play-circle"></i> Video
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -359,8 +376,4 @@ include 'includes/header.php';
     </div>
 </section>
 
-// Add similar code where projects are displayed
-<div class="project-links">
-// Same link structure as above 
-</div>
 <?php include 'includes/footer.php'; ?>

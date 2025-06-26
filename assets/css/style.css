@@ -1035,5 +1035,68 @@
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--box-shadow);
+    max-height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Centered hero for sub-pages */
+.hero-content-wrapper {
+    justify-content: center;
+    text-align: center;
+}
+
+/* Education & Certifications Section */
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.education-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-color: var(--primary-color);
+}
+
+.education-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.education-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.education-card .institution {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.education-card ul {
+    text-align: left;
+    list-style-type: '✓  ';
+    padding-left: 1.5rem;
+    margin-bottom: 0;
+}
+
+.education-card ul li {
+    margin-bottom: 0.5rem;
 }
   

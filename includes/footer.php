@@ -24,18 +24,15 @@
                         <div class="social-icons">
                             <?php 
                             $personalInfo = getPersonalInfo();
-                            if ($personalInfo) {
-                                if (!empty($personalInfo['github_url'])) {
-                                    echo '<a href="' . escapeHTML($personalInfo['github_url']) . '" target="_blank"><i class="fab fa-github"></i></a>';
-                                }
-                                if (!empty($personalInfo['linkedin_url'])) {
-                                    echo '<a href="' . escapeHTML($personalInfo['linkedin_url']) . '" target="_blank"><i class="fab fa-linkedin"></i></a>';
-                                }
-                                if (!empty($personalInfo['twitter_url'])) {
-                                    echo '<a href="' . escapeHTML($personalInfo['twitter_url']) . '" target="_blank"><i class="fab fa-twitter"></i></a>';
-                                }
+                            if ($personalInfo && !empty($personalInfo['github_url'])) {
+                                echo '<a href="' . escapeHTML($personalInfo['github_url']) . '" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>';
                             }
                             ?>
+                            <a href="https://www.linkedin.com/in/tonny-ouma/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://www.facebook.com/ouma.tonny.92/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="https://wa.me/254742942435" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            <a href="mailto:ouatonny8@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ include 'includes/header.php';
         <div class="about-content">
             <div class="about-image">
                 <div class="image-frame">
-                    <img src="/assets/images/profile.jpg" alt="Ouma Tonny" onerror="this.src='/assets/images/profile-placeholder.jpg'">
+                    <img src="https://oumatonny.github.io/Ouma.png" alt="Ouma Tonny" onerror="this.src='/assets/images/tonny-seminar.png'">
                 </div>
             </div>
             <div class="about-text">
@@ -83,49 +83,60 @@ include 'includes/header.php';
 <section class="experience-section">
     <div class="container">
         <div class="section-header">
-            <h2>Experience & Education</h2>
+            <h2>My Journey</h2>
             <div class="section-line"></div>
         </div>
         
+        <h3 style="text-align: center; margin-bottom: 2rem;">Work Experience</h3>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
-                    <h3>Senior Data Scientist</h3>
-                    <h4>Tech Solutions Inc.</h4>
-                    <p class="timeline-date">2020 - Present</p>
-                    <p>Leading data science initiatives and developing machine learning models to solve complex business problems. Collaborating with cross-functional teams to implement data-driven solutions.</p>
+                    <h3>Web Developer</h3>
+                    <h4>Onest Developers, Nairobi</h4>
+                    <p class="timeline-date">2023 - 2024</p>
+                    <p>Provided web development, design, and SEO for various clients. Responsibilities included project design, version control, development, documentation, and customer support.</p>
                 </div>
             </div>
             
             <div class="timeline-item">
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
-                    <h3>Software Developer</h3>
-                    <h4>Innovative Systems Ltd.</h4>
-                    <p class="timeline-date">2018 - 2020</p>
-                    <p>Developed and maintained web applications using modern frameworks. Implemented responsive designs and optimized application performance.</p>
+                    <h3>IT Support Intern</h3>
+                    <h4>KEPHIS, Nairobi</h4>
+                    <p class="timeline-date">2022 - 2022</p>
+                    <p>Configured and troubleshooted LANs, updated software, and provided ICT support at the Kenya Plant Health Inspectorate Service.</p>
                 </div>
             </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-marker"></div>
-                <div class="timeline-content">
-                    <h3>Master's in Data Science</h3>
-                    <h4>University of Technology</h4>
-                    <p class="timeline-date">2016 - 2018</p>
-                    <p>Specialized in machine learning algorithms and statistical analysis. Completed thesis on predictive modeling for financial markets.</p>
-                </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 4rem;">
+            <h2>Education & Certifications</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="education-grid">
+            <div class="education-card">
+                <div class="education-icon"><i class="fas fa-university"></i></div>
+                <h3>Bachelor of Science in Computer Science</h3>
+                <p class="institution">University of Eldoret | Graduated Nov 2023</p>
+                <ul>
+                    <li>Second Class Honors (Upper Division)</li>
+                    <li>Final Project: Image Recognition System for Class Attendance</li>
+                </ul>
             </div>
             
-            <div class="timeline-item">
-                <div class="timeline-marker"></div>
-                <div class="timeline-content">
-                    <h3>Bachelor's in Computer Science</h3>
-                    <h4>National University</h4>
-                    <p class="timeline-date">2012 - 2016</p>
-                    <p>Focused on software engineering and database systems. Graduated with honors and received award for outstanding academic performance.</p>
-                </div>
+            <div class="education-card">
+                <div class="education-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Introduction to Cyber Security</h3>
+                <p class="institution">CISCO | June 2022</p>
+            </div>
+            
+            <div class="education-card">
+                <div class="education-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Web Development Stack</h3>
+                <p class="institution">Udemy | 2020</p>
+                <p>Completed courses covering JavaScript, PHP, Python, Bootstrap, and more.</p>
             </div>
         </div>
     </div>

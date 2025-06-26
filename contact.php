@@ -54,10 +54,23 @@ $csrfToken = generateCSRFToken();
 include 'includes/header.php';
 ?>
 
-<section class="page-header">
+<section class="hero-section mb-5">
     <div class="container">
-        <h1>Contact Me</h1>
-        <p>Get in touch for collaborations or inquiries</p>
+        <div class="hero-content-wrapper" style="min-height: 30vh;">
+            <div class="hero-text">
+                <h1 class="animated-text">
+                    <span class="name">Contact Me</span>
+                </h1>
+                <p class="dynamic-description" id="dynamicDescription" style="max-width: 600px;">Have a project, a question, or just want to connect? I'd love to hear from you.</p>
+                <div class="hero-buttons animated-text-delay-3">
+                    <a href="mailto:<?php echo isset($personalInfo['email']) ? $personalInfo['email'] : 'ouatonny8@gmail.com'; ?>" class="btn btn-primary">Email Me</a>
+                    <a href="<?php echo BASE_PATH; ?>/portfolio/" class="btn btn-outline">View My Work</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-background">
+        <div class="animated-bg"></div>
     </div>
 </section>
 

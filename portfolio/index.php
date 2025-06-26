@@ -16,10 +16,23 @@ $categories = $db->fetchAll("SELECT DISTINCT category FROM projects WHERE catego
 include '../includes/header.php';
 ?>
 
-<section class="page-header">
+<section class="hero-section mb-5">
     <div class="container">
-        <h1>Portfolio</h1>
-        <p>Explore my projects and work</p>
+        <div class="hero-content-wrapper" style="min-height: 30vh;">
+            <div class="hero-text">
+                <h1 class="animated-text">
+                    <span class="name">Portfolio</span>
+                </h1>
+                <p class="dynamic-description" id="dynamicDescription" style="max-width: 600px;">Explore my projects, case studies, and contributions in the world of data and software.</p>
+                <div class="hero-buttons animated-text-delay-3">
+                    <a href="<?php echo BASE_PATH; ?>/contact.php" class="btn btn-primary">Hire Me</a>
+                    <a href="#projects-grid" class="btn btn-outline">See Projects</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-background">
+        <div class="animated-bg"></div>
     </div>
 </section>
 
@@ -36,7 +49,7 @@ include '../includes/header.php';
             </div>
         <?php endif; ?>
         
-        <div class="projects-grid">
+        <div class="projects-grid" id="projects-grid">
             <?php if (!empty($projects)): ?>
                 <?php foreach ($projects as $project): ?>
                     <div class="project-card" data-category="<?php echo strtolower(str_replace(' ', '-', $project['category'])); ?>">

@@ -19,17 +19,30 @@ $tags = $db->fetchAll("SELECT t.* FROM blog_tags t
 include '../includes/header.php';
 ?>
 
-<section class="page-header">
+<section class="hero-section mb-5">
     <div class="container">
-        <h1>Blog</h1>
-        <p>Insights, tutorials, and updates</p>
+        <div class="hero-content-wrapper" style="min-height: 30vh;">
+            <div class="hero-text">
+                <h1 class="animated-text">
+                    <span class="name">My Blog</span>
+                </h1>
+                <p class="dynamic-description" id="dynamicDescription" style="max-width: 600px;">Insights, tutorials, and reflections on data science, programming, and technology.</p>
+                <div class="hero-buttons animated-text-delay-3">
+                    <a href="<?php echo BASE_PATH; ?>/contact.php" class="btn btn-primary">Get In Touch</a>
+                    <a href="#blog-main" class="btn btn-outline">Read Posts</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-background">
+        <div class="animated-bg"></div>
     </div>
 </section>
 
 <section class="blog-section">
     <div class="container">
         <div class="blog-layout">
-            <div class="blog-main">
+            <div class="blog-main" id="blog-main">
                 <?php if ($posts): ?>
                     <div class="posts-grid">
                         <?php foreach ($posts as $post): ?>
