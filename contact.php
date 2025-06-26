@@ -245,7 +245,7 @@ include 'includes/header.php';
     background: white;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(97, 96, 96, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeInLeft 0.8s ease-out;
 }
@@ -296,7 +296,7 @@ include 'includes/header.php';
 
 .contact-text h3 {
     font-size: 1.1rem;
-    color: var(--text-color, #2c3e50);
+    color: var(--text-color,rgb(8, 19, 30));
     margin-bottom: 0.25rem;
 }
 
@@ -306,13 +306,13 @@ include 'includes/header.php';
 }
 
 .contact-text a {
-    color: var(--accent-color, #3498db);
+    color: var(--accent-color,rgb(6, 20, 30));
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contact-text a:hover {
-    color: var(--primary-color, #2c3e50);
+    color: var(--primary-color,rgb(0, 35, 70));
 }
 
 .social-links {
@@ -322,7 +322,7 @@ include 'includes/header.php';
 }
 
 .social-link {
-    background: var(--bg-color, #f8f9fa);
+    background: var(--bg-color,rgb(44, 3, 56));
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -375,7 +375,7 @@ include 'includes/header.php';
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: var(--bg-color, #f8f9fa);
+    background: var(--bg-color,rgb(143, 194, 244));
 }
 
 .form-group input:focus,
