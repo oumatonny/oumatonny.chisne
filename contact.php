@@ -2,6 +2,10 @@
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 require_once 'includes/security.php';
+require_once 'mailing/vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 $currentPage = 'contact';
 $pageTitle = 'Contact Me';
@@ -13,16 +17,23 @@ $personalInfo = getPersonalInfo();
 $success = false;
 $error = '';
 
+// SMTP Configuration
+$smtp_host = 'mail.chisne.co.ke';
+$smtp_username = 'oumatonny@chisne.co.ke';
+$smtp_password = 'Tonny#2025';
+$smtp_port = 587;
+$admin_email = 'oumatonny@chisne.co.ke';
+
 // Process contact form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check CSRF token
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
-        $error = 'Invalid form submission';
+        $error = 'Invalid form submission. Please try again.';
     } else {
         // Get form data
         $name = clean($_POST['name'] ?? '');
         $email = clean($_POST['email'] ?? '');
-        $subject = clean($_POST['subject'] ?? '');
+        $subject = clean($_POST['subject'] ?? 'New Message');
         $message = clean($_POST['message'] ?? '');
         
         // Validate form data
@@ -31,18 +42,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'Please enter a valid email address';
         } else {
-            // Send email
-            $to = ADMIN_EMAIL;
-            $subject = "Contact Form: " . ($subject ?: "New Message");
-            $emailMessage = "Name: $name\n";
-            $emailMessage .= "Email: $email\n\n";
-            $emailMessage .= "Message:\n$message";
-            $headers = "From: $email";
-            
-            if (mail($to, $subject, $emailMessage, $headers)) {
+            try {
+                // Send email to admin
+                $mail = new PHPMailer(true);
+                
+                // Server settings
+                $mail->isSMTP();
+                $mail->Host = $smtp_host;
+                $mail->SMTPAuth = true;
+                $mail->Username = $smtp_username;
+                $mail->Password = $smtp_password;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = $smtp_port;
+                
+                // Disable SSL verification (for local/testing only)
+                $mail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
+                
+                // Recipients
+                $mail->setFrom($smtp_username, 'Website Contact Form');
+                $mail->addAddress($admin_email, 'Ouma Tonny');
+                $mail->addReplyTo($email, $name);
+                
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = "Contact Form: $subject";
+                $mail->Body = "
+                    <h2>New Contact Form Submission</h2>
+                    <p><strong>Name:</strong> $name</p>
+                    <p><strong>Email:</strong> $email</p>
+                    <p><strong>Subject:</strong> $subject</p>
+                    <p><strong>Message:</strong></p>
+                    <p>" . nl2br(htmlspecialchars($message)) . "</p>";
+                $mail->AltBody = "Name: $name\nEmail: $email\nSubject: $subject\n\nMessage:\n$message";
+                
+                $mail->send();
+                
+                // Send confirmation email to user
+                $userMail = new PHPMailer(true);
+                $userMail->isSMTP();
+                $userMail->Host = $smtp_host;
+                $userMail->SMTPAuth = true;
+                $userMail->Username = $smtp_username;
+                $userMail->Password = $smtp_password;
+                $userMail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $userMail->Port = $smtp_port;
+                $userMail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
+                
+                $userMail->setFrom($smtp_username, 'Ouma Tonny');
+                $userMail->addAddress($email, $name);
+                
+                $userMail->isHTML(true);
+                $userMail->Subject = "Thank you for contacting Ouma Tonny";
+                $userMail->Body = "
+                    <h2>Thank you for your message, $name!</h2>
+                    <p>I have received your message and will get back to you as soon as possible.</p>
+                    <p><strong>Your Message:</strong></p>
+                    <p>" . nl2br(htmlspecialchars($message)) . "</p>
+                    <p>Best regards,<br>Ouma Tonny</p>";
+                $userMail->AltBody = "Thank you for your message, $name!\n\nI have received your message and will get back to you as soon as possible.\n\nYour Message:\n$message\n\nBest regards,\nOuma Tonny";
+                
+                $userMail->send();
+                
                 $success = true;
-            } else {
-                $error = 'Failed to send message. Please try again later.';
+                
+            } catch (Exception $e) {
+                error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+                $error = 'Failed to send message. Please try again later or contact me directly at ' . $admin_email;
             }
         }
     }
@@ -59,9 +136,9 @@ include 'includes/header.php';
         <div class="hero-content-wrapper" style="min-height: 30vh;">
             <div class="hero-text">
                 <h1 class="animated-text">
-                    <span class="name">Contact Me</span>
+                    <span class="name text-center">Contact Me</span>
                 </h1>
-                <p class="dynamic-description" id="dynamicDescription" style="max-width: 600px;">Have a project, a question, or just want to connect? I'd love to hear from you.</p>
+                <p class="dynamic-description" id="dynamicDescription" style="max-width: 600px; text-align: center;">Have a project, a question, or just want to connect? I'd love to hear from you.</p>
                 <div class="hero-buttons animated-text-delay-3">
                     <a href="mailto:<?php echo isset($personalInfo['email']) ? $personalInfo['email'] : 'ouatonny8@gmail.com'; ?>" class="btn btn-primary">Email Me</a>
                     <a href="<?php echo BASE_PATH; ?>/portfolio/" class="btn btn-outline">View My Work</a>
@@ -79,8 +156,8 @@ include 'includes/header.php';
         <div class="contact-content">
             <div class="contact-info">
                 <div class="contact-info-card">
-                    <h2>Let's Connect</h2>
-                    <p>Feel free to reach out if you have any questions, project ideas, or just want to say hello. I'm always open to discussing new opportunities and collaborations.</p>
+                    <h2 style="color: blue;">Let's Connect</h2>
+                    <p style="color: black;">Feel free to reach out if you have any questions, project ideas, or just want to say hello. I'm always open to discussing new opportunities and collaborations.</p>
                     
                     <div class="contact-details">
                         <?php if (isset($personalInfo['email']) && !empty($personalInfo['email'])): ?>
@@ -89,7 +166,7 @@ include 'includes/header.php';
                                     <i class="fas fa-envelope"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <h3>Email</h3>
+                                    <h3 style="color: black;" >Email</h3>
                                     <p><a href="mailto:<?php echo $personalInfo['email']; ?>"><?php echo $personalInfo['email']; ?></a></p>
                                 </div>
                             </div>
@@ -101,7 +178,7 @@ include 'includes/header.php';
                                     <i class="fas fa-phone"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <h3>Phone</h3>
+                                    <h3 style="color: black;">Phone</h3>
                                     <p><a href="tel:<?php echo $personalInfo['phone']; ?>"><?php echo $personalInfo['phone']; ?></a></p>
                                 </div>
                             </div>
@@ -113,7 +190,7 @@ include 'includes/header.php';
                                     <i class="fas fa-map-marker-alt"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <h3>Location</h3>
+                                    <h3 style="color: black;">Location</h3>
                                     <p><?php echo $personalInfo['location']; ?></p>
                                 </div>
                             </div>
@@ -146,8 +223,8 @@ include 'includes/header.php';
                 <?php if ($success): ?>
                     <div class="success-message">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Message Sent!</h3>
-                        <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                        <h3 style="color: green;">Message Sent!</h3>
+                        <p style="color: green;">Thank you for reaching out. I'll get back to you as soon as possible.</p>
                         <button class="btn btn-primary" onclick="resetForm()">Send Another Message</button>
                     </div>
                 <?php else: ?>
@@ -242,17 +319,19 @@ include 'includes/header.php';
 }
 
 .contact-info-card {
-    background: white;
-    padding: 2rem;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    padding: 2.5rem;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(97, 96, 96, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
     animation: fadeInLeft 0.8s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .contact-info-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .contact-info h2 {
@@ -269,28 +348,35 @@ include 'includes/header.php';
     display: flex;
     align-items: flex-start;
     margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
 }
 
 .contact-item:hover {
+    background: rgba(255, 255, 255, 0.9);
     transform: translateX(5px);
 }
 
 .contact-icon {
-    background: var(--primary-color, #2c3e50);
-    width: 45px;
-    height: 45px;
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: white;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 1rem;
-    color: white;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(110, 69, 226, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.contact-item:hover .contact-icon {
+.contact-icon:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(110, 69, 226, 0.4);
     background: var(--accent-color, #3498db);
 }
 
@@ -343,11 +429,18 @@ include 'includes/header.php';
 }
 
 .contact-form-container {
-    background: white;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
     padding: 2.5rem;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     animation: fadeInRight 0.8s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .contact-form {
@@ -363,27 +456,46 @@ include 'includes/header.php';
 }
 
 .form-group label {
-    color: var(--text-color, #2c3e50);
-    font-weight: 500;
+    color: #333;
+    font-weight: 600;
     font-size: 0.95rem;
+    margin-bottom: 0.5rem;
 }
 
 .form-group input,
 .form-group textarea {
-    padding: 0.85rem;
-    border: 2px solid var(--border-color, #eee);
+    padding: 0.85rem 1rem;
+    border: 2px solid #e0e0e0;
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: var(--bg-color,rgb(143, 194, 244));
+    background: #ffffff;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+    opacity: 1;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: var(--accent-color, #3498db);
+    border-color: #3498db;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    background: white;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background: #ffffff;
+    color: #000;
+}
+
+/* Ensure text is visible in all states */
+.form-group input,
+.form-group textarea,
+.form-group input:focus,
+.form-group textarea:focus {
+    color: #333;
 }
 
 .form-actions {

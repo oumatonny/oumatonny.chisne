@@ -1,0 +1,13 @@
+{
+    "name": "mailing/contact-form",
+    "description": "A simple contact form using PHPMailer",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
